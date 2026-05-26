@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap');
+  *{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --bg:#0a0a0f;--surface:#13131a;--surface2:#1c1c26;--border:#2a2a38;
+    --accent:#e63946;--accent2:#ff6b6b;--safe:#2ecc71;--warn:#f39c12;
+    --text:#f0f0f8;--muted:#8888aa;--font:'Space Grotesk',sans-serif;--mono:'Space Mono',monospace;
+  }
+  body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:100vh;overflow-x:hidden}
+  .app{display:flex;flex-direction:column;min-height:100vh;max-width:480px;margin:0 auto;padding:0 0 80px}
+  .topbar{display:flex;align-items:center;justify-content:space-between;padding:20px 20px 0;position:sticky;top:0;background:var(--bg);z-index:10;border-bottom:1px solid var(--border);padding-bottom:16px}
+  .logo{font-family:var(--mono);font-size:18px;font-weight:700;letter-spacing:2px;color:var(--text)}
+  .logo span{color:var(--accent)}
+  .status-dot{width:8px;height:8px;border-radius:50%;background:var(--safe);box-shadow:0 0 8px var(--safe);animation:pulse 2s infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
+  .status-label{font-size:11px;color:var(--muted);font-family:var(--mono);letter-spacing:1px;display:flex;align-items:center;gap:8px}
+  .map-container{position:relative;margin:20px;border-radius:16px;overflow:hidden;border:1px solid var(--border);height:260px;background:#111118}
+  #map{width:100%;height:100%}
+  .map-overlay-top{position:absolute;top:0;left:0;right:0;height:60px;background:linear-gradient(to bottom,rgba(10,10,15,0.8),transparent);z-index:400;pointer-events:none}
+  .map-overlay-bottom{position:absolute;bottom:0;left:0;right:0;height:40px;background:linear-gradient(to top,rgba(10,10,15,0.8),transparent);z-index:400;pointer-events:none}
+  .locate-btn{position:absolute;bottom:12px;right:12px;z-index:500;background:var(--surface);border:1px solid var(--border);color:var(--text);width:38px;height:38px;border-radius:10px;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+  .risk-card{margin:0 20px 16px;border-radius:16px;padding:20px;border:1px solid var(--border);background:var(--surface);position:relative;overflow:hidden}
+  .risk-card.danger{border-color:var(--accent);background:#1a0a0c}
+  .risk-card.safe{border-color:#1a3a27;background:#0a1a12}
+  .risk-card.warning{border-color:#3a2a0a;background:#1a1a0a}
+  .risk-badge{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:10px;letter-spacing:2px;padding:4px 10px;border-radius:6px;margin-bottom:12px}
+  .risk-badge.danger{background:rgba(230,57,70,0.15);color:var(--accent)}
+  .risk-badge.safe{background:rgba(46,204,113,0.15);color:var(--safe)}
+  .risk-badge.warning{background:rgba(243,156,18,0.15);color:var(--warn)}
+  .risk-title{font-size:20px;font-weight:700;line-height:1.2;margin-bottom:8px}
+  .risk-sub{font-size:13px;color:var(--muted);line-height:1.6}
+  .risk-meter{margin-top:16px;height:4px;background:var(--border);border-radius:2px;overflow:hidden}
+  .risk-meter-fill{height:100%;border-radius:2px;transition:width 0.8s ease}
+  .risk-meter-fill.danger{background:var(--accent)}
+  .risk-meter-fill.safe{background:var(--safe)}
+  .risk-meter-fill.warning{background:var(--warn)}
+  .section-label{font-family:var(--mono);font-size:10px;letter-spacing:2px;color:var(--muted);margin:0 20px 12px;text-transform:uppercase}
+  .hotspots-grid{margin:0 20px 20px;display:flex;flex-direction:column;gap:10px}
+  .hotspot-item{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px 16px;display:flex;align-items:center;gap:14px;cursor:pointer;transition:border-color 0.2s}
+  .hotspot-item:hover{border-color:var(--accent)}
+  .hotspot-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+  .hotspot-dot.red{background:var(--accent);box-shadow:0 0 6px var(--accent)}
+  .hotspot-dot.blue{background:#4a9eff;box-shadow:0 0 6px #4a9eff}
+  .hotspot-dot.purple{background:#9b59b6;box-shadow:0 0 6px #9b59b6}
+  .hotspot-info{flex:1;min-width:0}
+  .hotspot-name{font-size:13px;font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .hotspot-area{font-size:11px;color:var(--muted);margin-top:2px}
+  .hotspot-dist{font-family:var(--mono);font-size:12px;color:var(--muted);flex-shrink:0}
+  .voice-section{margin:0 20px 20px}
+  .robert-speaking{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:18px;display:flex;flex-direction:column;gap:14px}
+  .robert-header{display:flex;align-items:center;gap:12px}
+  .robert-avatar{width:40px;height:40px;border-radius:12px;background:var(--surface2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+  .robert-name{font-size:13px;font-weight:600}
+  .robert-role{font-size:11px;color:var(--muted)}
+  .waveform{display:flex;align-items:center;gap:3px;height:24px}
+  .wave-bar{width:3px;border-radius:2px;background:var(--accent);animation:none;opacity:0.3}
+  .wave-bar.active{opacity:1;animation:wave 0.8s ease-in-out infinite}
+  .wave-bar:nth-child(1){animation-delay:0s;height:8px}
+  .wave-bar:nth-child(2){animation-delay:0.1s;height:16px}
+  .wave-bar:nth-child(3){animation-delay:0.2s;height:24px}
+  .wave-bar:nth-child(4){animation-delay:0.3s;height:16px}
+  .wave-bar:nth-child(5){animation-delay:0.4s;height:8px}
+  .wave-bar:nth-child(6){animation-delay:0.1s;height:20px}
+  .wave-bar:nth-child(7){animation-delay:0.2s;height:12px}
+  @keyframes wave{0%,100%{transform:scaleY(0.4)}50%{transform:scaleY(1)}}
+  .speak-btn{width:100%;padding:12px;background:rgba(230,57,70,0.1);border:1px solid rgba(230,57,70,0.3);color:var(--accent);border-radius:10px;font-family:var(--font);font-size:13px;font-weight:600;cursor:pointer;letter-spacing:0.5px;transition:all 0.2s}
+  .speak-btn:hover{background:rgba(230,57,70,0.2)}
+  .speak-btn.speaking{background:rgba(230,57,70,0.2);border-color:var(--accent)}
+  .coords-bar{margin:0 20px 20px;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px 16px;display:flex;align-items:center;justify-content:space-between}
+  .coord-item{text-align:center}
+  .coord-label{font-family:var(--mono);font-size:9px;letter-spacing:1px;color:var(--muted);margin-bottom:4px}
+  .coord-val{font-family:var(--mono);font-size:12px;color:var(--text)}
+  .divider{width:1px;height:30px;background:var(--border)}
+  .scan-btn{width:calc(100% - 40px);margin:0 20px 20px;padding:16px;background:var(--accent);color:white;border:none;border-radius:14px;font-family:var(--font);font-size:15px;font-weight:700;cursor:pointer;letter-spacing:0.5px;transition:opacity 0.2s}
+  .scan-btn:hover{opacity:0.85}
+  .scan-btn:active{transform:scale(0.98)}
+</style>
+
+<div class="app">
+  <div class="topbar">
+    <div class="logo">R<span>O</span>BERT</div>
+    <div class="status-label"><div class="status-dot" id="statusDot"></div><span id="statusText">MONITORING</span></div>
+  </div>
+
+  <div class="map-container">
+    <div id="map"></div>
+    <div class="map-overlay-top"></div>
+    <div class="map-overlay-bottom"></div>
+    <button class="locate-btn" onclick="locateMe()" title="Locate me">⊕</button>
+  </div>
+
+  <div class="risk-card safe" id="riskCard">
+    <div class="risk-badge safe" id="riskBadge">● SAFE ZONE</div>
+    <div class="risk-title" id="riskTitle">All clear, driver</div>
+    <div class="risk-sub" id="riskSub">No high-risk zones detected near your current location. Stay alert and keep moving.</div>
+    <div class="risk-meter"><div class="risk-meter-fill safe" id="riskFill" style="width:15%"></div></div>
+  </div>
+
+  <div class="coords-bar">
+    <div class="coord-item"><div class="coord-label">LAT</div><div class="coord-val" id="coordLat">--</div></div>
+    <div class="divider"></div>
+    <div class="coord-item"><div class="coord-label">LON</div><div class="coord-val" id="coordLon">--</div></div>
+    <div class="divider"></div>
+    <div class="coord-item"><div class="coord-label">HOUR</div><div class="coord-val" id="coordHour">--</div></div>
+    <div class="divider"></div>
+    <div class="coord-item"><div class="coord-label">NEAREST</div><div class="coord-val" id="coordDist">--</div></div>
+  </div>
+
+  <div class="section-label">Gauteng Hotspots</div>
+  <div class="hotspots-grid">
+    <div class="hotspot-item" onclick="testLocation(-26.116597,28.077212,'East JHB')">
+      <div class="hotspot-dot red"></div>
+      <div class="hotspot-info">
+        <div class="hotspot-name">East JHB — Bramley / Wynberg</div>
+        <div class="hotspot-area">428 incidents · Peak 9am</div>
+      </div>
+      <div class="hotspot-dist" id="dist0">--</div>
+    </div>
+    <div class="hotspot-item" onclick="testLocation(-26.105703,27.833007,'West Gauteng')">
+      <div class="hotspot-dot blue"></div>
+      <div class="hotspot-info">
+        <div class="hotspot-name">West Gauteng — Roodepoort</div>
+        <div class="hotspot-area">419 incidents · Peak 9am</div>
+      </div>
+      <div class="hotspot-dist" id="dist1">--</div>
+    </div>
+    <div class="hotspot-item" onclick="testLocation(-26.045399,28.071886,'Sandton')">
+      <div class="hotspot-dot purple"></div>
+      <div class="hotspot-info">
+        <div class="hotspot-name">Sandton — Rivonia / Woodmead</div>
+        <div class="hotspot-area">15 incidents · Peak 12pm</div>
+      </div>
+      <div class="hotspot-dist" id="dist2">--</div>
+    </div>
+  </div>
+
+  <div class="voice-section">
+    <div class="robert-speaking">
+      <div class="robert-header">
+        <div class="robert-avatar">🤖</div>
+        <div>
+          <div class="robert-name">Robert</div>
+          <div class="robert-role">Vehicle Safety AI · Gauteng</div>
+        </div>
+        <div class="waveform" id="waveform" style="margin-left:auto">
+          <div class="wave-bar" id="wb1"></div>
+          <div class="wave-bar" id="wb2"></div>
+          <div class="wave-bar" id="wb3"></div>
+          <div class="wave-bar" id="wb4"></div>
+          <div class="wave-bar" id="wb5"></div>
+          <div class="wave-bar" id="wb6"></div>
+          <div class="wave-bar" id="wb7"></div>
+        </div>
+      </div>
+      <button class="speak-btn" id="speakBtn" onclick="robertSpeak()">▶ Hear Robert's Alert</button>
+    </div>
+  </div>
+
+  <button class="scan-btn" onclick="locateMe()">📍 Scan My Location</button>
+</div>
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+const HOTSPOTS=[
+  {id:0,name:"East JHB — Bramley/Wynberg",lat:-26.116597,lon:28.077212,color:"#e63946",peak:"9am"},
+  {id:1,name:"West Gauteng — Roodepoort",lat:-26.105703,lon:27.833007,color:"#4a9eff",peak:"9am"},
+  {id:2,name:"Sandton — Rivonia/Woodmead",lat:-26.045399,lon:28.071886,color:"#9b59b6",peak:"12pm"}
+];
+
+let map,userMarker,currentLat=-26.2041,currentLon=28.0473,currentAlert=null;
+
+function initMap(){
+  map=L.map('map',{zoomControl:false,attributionControl:false}).setView([-26.15,27.95],10);
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',{maxZoom:19}).addTo(map);
+  HOTSPOTS.forEach(h=>{
+    const circle=L.circle([h.lat,h.lon],{radius:1500,color:h.color,fillColor:h.color,fillOpacity:0.15,weight:1.5}).addTo(map);
+    circle.bindPopup(`<b style="color:${h.color}">${h.name}</b><br><small>Peak: ${h.peak}</small>`);
+    L.circleMarker([h.lat,h.lon],{radius:5,color:h.color,fillColor:h.color,fillOpacity:1,weight:2}).addTo(map);
+  });
+  const userIcon=L.divIcon({html:`<div style="width:14px;height:14px;border-radius:50%;background:#e63946;border:2px solid white;box-shadow:0 0 8px rgba(230,57,70,0.8)"></div>`,className:'',iconSize:[14,14],iconAnchor:[7,7]});
+  userMarker=L.marker([currentLat,currentLon],{icon:userIcon}).addTo(map);
+  updateDistances(currentLat,currentLon);
+  assessRisk(currentLat,currentLon);
+}
+
+function haversine(lat1,lon1,lat2,lon2){
+  const R=6371,dLat=(lat2-lat1)*Math.PI/180,dLon=(lon2-lon1)*Math.PI/180;
+  const a=Math.sin(dLat/2)**2+Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*Math.sin(dLon/2)**2;
+  return 2*R*Math.asin(Math.sqrt(a));
+}
+
+function updateDistances(lat,lon){
+  HOTSPOTS.forEach((h,i)=>{
+    const d=haversine(lat,lon,h.lat,h.lon);
+    document.getElementById('dist'+i).textContent=d.toFixed(1)+'km';
+  });
+  document.getElementById('coordLat').textContent=lat.toFixed(4);
+  document.getElementById('coordLon').textContent=lon.toFixed(4);
+  document.getElementById('coordHour').textContent=new Date().getHours()+'h';
+}
+
+function assessRisk(lat,lon){
+  const hour=new Date().getHours();
+  let minDist=Infinity,nearest=null;
+  HOTSPOTS.forEach(h=>{
+    const d=haversine(lat,lon,h.lat,h.lon);
+    if(d<minDist){minDist=d;nearest=h;}
+  });
+  document.getElementById('coordDist').textContent=minDist.toFixed(1)+'km';
+  const card=document.getElementById('riskCard');
+  const badge=document.getElementById('riskBadge');
+  const title=document.getElementById('riskTitle');
+  const sub=document.getElementById('riskSub');
+  const fill=document.getElementById('riskFill');
+  const isNight=hour>=20||hour<=3;
+  if(minDist<1.5){
+    card.className='risk-card danger';
+    badge.className='risk-badge danger';
+    badge.textContent='⚠ DANGER ZONE';
+    title.textContent='High risk area detected';
+    sub.textContent=`You are ${minDist.toFixed(2)}km from ${nearest.name}. Lock doors. Stay alert. Avoid stopping if possible.`;
+    fill.className='risk-meter-fill danger';fill.style.width='90%';
+    currentAlert={type:'danger',name:nearest.name,dist:minDist};
+  } else if(minDist<3){
+    card.className='risk-card warning';
+    badge.className='risk-badge warning';
+    badge.textContent='◆ CAUTION';
+    title.textContent='Approaching hotspot zone';
+    sub.textContent=`${nearest.name} is ${minDist.toFixed(2)}km away. Consider alternate routes through lower-risk corridors.`;
+    fill.className='risk-meter-fill warning';fill.style.width='55%';
+    currentAlert={type:'warning',name:nearest.name,dist:minDist};
+  } else {
+    card.className='risk-card safe';
+    badge.className='risk-badge safe';
+    badge.textContent='● SAFE ZONE';
+    title.textContent='All clear, driver';
+    sub.textContent=`Nearest hotspot is ${minDist.toFixed(2)}km away at ${nearest.name}. Continue your route safely.`;
+    fill.className='risk-meter-fill safe';fill.style.width=Math.max(5,20-(minDist*2))+'%';
+    currentAlert={type:'safe',name:nearest.name,dist:minDist};
+  }
+}
+
+function locateMe(){
+  if(!navigator.geolocation){alert('Geolocation not available in this browser');return;}
+  navigator.geolocation.getCurrentPosition(pos=>{
+    currentLat=pos.coords.latitude;
+    currentLon=pos.coords.longitude;
+    userMarker.setLatLng([currentLat,currentLon]);
+    map.setView([currentLat,currentLon],13);
+    updateDistances(currentLat,currentLon);
+    assessRisk(currentLat,currentLon);
+  },()=>{alert('Could not get location. Try test buttons on the hotspot cards.');});
+}
+
+function testLocation(lat,lon,name){
+  currentLat=lat;currentLon=lon;
+  userMarker.setLatLng([lat,lon]);
+  map.setView([lat,lon],13);
+  updateDistances(lat,lon);
+  assessRisk(lat,lon);
+}
+
+function robertSpeak(){
+  if(!('speechSynthesis' in window)){alert('Speech not supported in this browser');return;}
+  const btn=document.getElementById('speakBtn');
+  const bars=document.querySelectorAll('.wave-bar');
+  window.speechSynthesis.cancel();
+  if(!currentAlert){return;}
+  let msg='';
+  const h=new Date().getHours();
+  if(currentAlert.type==='danger'){
+    msg=`Warning. You are ${currentAlert.dist.toFixed(1)} kilometres from ${currentAlert.name}, a high-risk carjacking zone. Lock your doors immediately. Do not stop the vehicle. Stay alert and keep moving. Consider an alternate route.`;
+  } else if(currentAlert.type==='warning'){
+    msg=`Caution. You are approaching ${currentAlert.name}, ${currentAlert.dist.toFixed(1)} kilometres ahead. This is a known risk corridor. Consider an alternate route if possible. Stay aware of your surroundings.`;
+  } else {
+    msg=`All clear. Nearest hotspot is ${currentAlert.dist.toFixed(1)} kilometres away at ${currentAlert.name}. You are in a safe zone. Continue your route. Robert is monitoring.`;
+  }
+  const utt=new SpeechSynthesisUtterance(msg);
+  const voices=window.speechSynthesis.getVoices();
+  const pref=voices.find(v=>v.name.includes('Google')&&v.lang.includes('en'))||voices.find(v=>v.lang.includes('en-GB'))||voices[0];
+  if(pref)utt.voice=pref;
+  utt.rate=0.88;utt.pitch=0.85;utt.volume=1;
+  utt.onstart=()=>{
+    btn.textContent='◼ Robert speaking...';btn.className='speak-btn speaking';
+    bars.forEach(b=>b.classList.add('active'));
+  };
+  utt.onend=()=>{
+    btn.textContent='▶ Hear Robert\'s Alert';btn.className='speak-btn';
+    bars.forEach(b=>b.classList.remove('active'));
+  };
+  window.speechSynthesis.speak(utt);
+}
+
+window.addEventListener('load',()=>{
+  initMap();
+  window.speechSynthesis&&window.speechSynthesis.getVoices();
+});
+</script>

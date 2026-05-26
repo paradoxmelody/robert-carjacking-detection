@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_db04d0ce8f8e775e00b0af213c8862b7 {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            </style>
+
+            <style>html, body {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+            </style>
+
+            <style>#map {
+                position:absolute;
+                top:0;
+                bottom:0;
+                right:0;
+                left:0;
+                }
+            </style>
+
+            <script>
+                L_NO_TOUCH = false;
+                L_DISABLE_3D = false;
+            </script>
+
+        
+</head>
+<body>
+    
+    
+            <div class="folium-map" id="map_db04d0ce8f8e775e00b0af213c8862b7" ></div>
+        
+</body>
+<script>
+    
+    
+            var map_db04d0ce8f8e775e00b0af213c8862b7 = L.map(
+                "map_db04d0ce8f8e775e00b0af213c8862b7",
+                {
+                    center: [-26.1, 28.0],
+                    crs: L.CRS.EPSG3857,
+                    ...{
+  "zoom": 11,
+  "zoomControl": true,
+  "preferCanvas": false,
+}
+
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_56bcd3d1cffad99a77b597465b7caeec = L.tileLayer(
+                "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+                {
+  "minZoom": 0,
+  "maxZoom": 19,
+  "maxNativeZoom": 19,
+  "noWrap": false,
+  "attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors",
+  "subdomains": "abc",
+  "detectRetina": false,
+  "tms": false,
+  "opacity": 1,
+}
+
+            );
+        
+    
+            tile_layer_56bcd3d1cffad99a77b597465b7caeec.addTo(map_db04d0ce8f8e775e00b0af213c8862b7);
+        
+    
+            var circle_99d0a1b932e89ed8f14e146a637905a8 = L.circle(
+                [-26.116596601431983, 28.07721170644391],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 1500, "stroke": true, "weight": 3}
+            ).addTo(map_db04d0ce8f8e775e00b0af213c8862b7);
+        
+    
+        var popup_18375eee248526f980a707024e22526e = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_460eb2584b79324b21a0a64c40799938 = $(`<div id="html_460eb2584b79324b21a0a64c40799938" style="width: 100.0%; height: 100.0%;">⚠️ HOTSPOT: East JHB — Bramley/Wynberg</div>`)[0];
+                popup_18375eee248526f980a707024e22526e.setContent(html_460eb2584b79324b21a0a64c40799938);
+            
+        
+
+        circle_99d0a1b932e89ed8f14e146a637905a8.bindPopup(popup_18375eee248526f980a707024e22526e)
+        ;
+
+        
+    
+    
+            var marker_d1e06121ce198137ebee32e6c30b27a9 = L.marker(
+                [-26.116596601431983, 28.07721170644391],
+                {
+}
+            ).addTo(map_db04d0ce8f8e775e00b0af213c8862b7);
+        
+    
+            var icon_5ad1dee6a5619d233460bb1bfe3e20cc = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "warning-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_bf8db15638725c3aa6695787d697a013 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_b26be08abdcc7dfd91585f4547b18abb = $(`<div id="html_b26be08abdcc7dfd91585f4547b18abb" style="width: 100.0%; height: 100.0%;">East JHB — Bramley/Wynberg</div>`)[0];
+                popup_bf8db15638725c3aa6695787d697a013.setContent(html_b26be08abdcc7dfd91585f4547b18abb);
+            
+        
+
+        marker_d1e06121ce198137ebee32e6c30b27a9.bindPopup(popup_bf8db15638725c3aa6695787d697a013)
+        ;
+
+        
+    
+    
+                marker_d1e06121ce198137ebee32e6c30b27a9.setIcon(icon_5ad1dee6a5619d233460bb1bfe3e20cc);
+            
+    
+            var circle_7714c400d67f408316407ba151f4bb3f = L.circle(
+                [-26.105703441588783, 27.833006813084115],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "blue", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 1500, "stroke": true, "weight": 3}
+            ).addTo(map_db04d0ce8f8e775e00b0af213c8862b7);
+        
+    
+        var popup_b295c79f7c43a37baf11c60db454cf12 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_19015e287c1c6bd5e212f98301f98e3c = $(`<div id="html_19015e287c1c6bd5e212f98301f98e3c" style="width: 100.0%; height: 100.0%;">⚠️ HOTSPOT: West Gauteng — Roodepoort/Krugersdorp</div>`)[0];
+                popup_b295c79f7c43a37baf11c60db454cf12.setContent(html_19015e287c1c6bd5e212f98301f98e3c);
+            
+        
+
+        circle_7714c400d67f408316407ba151f4bb3f.bindPopup(popup_b295c79f7c43a37baf11c60db454cf12)
+        ;
+
+        
+    
+    
+            var marker_b038bea9dd255225cf7deacf46569334 = L.marker(
+                [-26.105703441588783, 27.833006813084115],
+                {
+}
+            ).addTo(map_db04d0ce8f8e775e00b0af213c8862b7);
+        
+    
+            var icon_e75216c5be920a9c60abbd8e390829e6 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "blue",
+  "iconColor": "white",
+  "icon": "warning-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_68c33be0b71f14a64ffa6b296c7a5078 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_f833b268231700a8df7efd1b81a48ab9 = $(`<div id="html_f833b268231700a8df7efd1b81a48ab9" style="width: 100.0%; height: 100.0%;">West Gauteng — Roodepoort/Krugersdorp</div>`)[0];
+                popup_68c33be0b71f14a64ffa6b296c7a5078.setContent(html_f833b268231700a8df7efd1b81a48ab9);
+            
+        
+
+        marker_b038bea9dd255225cf7deacf46569334.bindPopup(popup_68c33be0b71f14a64ffa6b296c7a5078)
+        ;
+
+        
+    
+    
+                marker_b038bea9dd255225cf7deacf46569334.setIcon(icon_e75216c5be920a9c60abbd8e390829e6);
+            
+    
+            var circle_4349a01620ba751ea95ed2d3a283f145 = L.circle(
+                [-26.0453994, 28.07188646666667],
+                {"bubblingMouseEvents": true, "color": "purple", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "purple", "fillOpacity": 0.3, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 1500, "stroke": true, "weight": 3}
+            ).addTo(map_db04d0ce8f8e775e00b0af213c8862b7);
+        
+    
+        var popup_ba0dafcb55f340f80e3af46ff1e71f16 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_334489f96f5df474aaf2ac32d5a205f5 = $(`<div id="html_334489f96f5df474aaf2ac32d5a205f5" style="width: 100.0%; height: 100.0%;">⚠️ HOTSPOT: Sandton Corridor — Rivonia/Woodmead</div>`)[0];
+                popup_ba0dafcb55f340f80e3af46ff1e71f16.setContent(html_334489f96f5df474aaf2ac32d5a205f5);
+            
+        
+
+        circle_4349a01620ba751ea95ed2d3a283f145.bindPopup(popup_ba0dafcb55f340f80e3af46ff1e71f16)
+        ;
+
+        
+    
+    
+            var marker_ce52def9cd18e323ea8e27e105ec14bc = L.marker(
+                [-26.0453994, 28.07188646666667],
+                {
+}
+            ).addTo(map_db04d0ce8f8e775e00b0af213c8862b7);
+        
+    
+            var icon_42203c7beb7f80e34298dbb322a987f9 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "purple",
+  "iconColor": "white",
+  "icon": "warning-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_14c932205343a25c1b044c1eb6607f81 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_97f6e19ef39d2f812c78bd1833b79a97 = $(`<div id="html_97f6e19ef39d2f812c78bd1833b79a97" style="width: 100.0%; height: 100.0%;">Sandton Corridor — Rivonia/Woodmead</div>`)[0];
+                popup_14c932205343a25c1b044c1eb6607f81.setContent(html_97f6e19ef39d2f812c78bd1833b79a97);
+            
+        
+
+        marker_ce52def9cd18e323ea8e27e105ec14bc.bindPopup(popup_14c932205343a25c1b044c1eb6607f81)
+        ;
+
+        
+    
+    
+                marker_ce52def9cd18e323ea8e27e105ec14bc.setIcon(icon_42203c7beb7f80e34298dbb322a987f9);
+            
+</script>
+</html>
